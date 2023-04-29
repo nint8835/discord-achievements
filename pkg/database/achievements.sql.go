@@ -51,6 +51,31 @@ func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementPa
 	return i, err
 }
 
+const createEarnedAchievement = `-- name: CreateEarnedAchievement :one
+INSERT INTO earned_achievements (
+  achievement_id, user_id
+) VALUES (
+  ?, ?
+) RETURNING id, user_id, achievement_id, created_at
+`
+
+type CreateEarnedAchievementParams struct {
+	AchievementID int64  `json:"achievement_id"`
+	UserID        string `json:"user_id"`
+}
+
+func (q *Queries) CreateEarnedAchievement(ctx context.Context, arg CreateEarnedAchievementParams) (EarnedAchievement, error) {
+	row := q.db.QueryRowContext(ctx, createEarnedAchievement, arg.AchievementID, arg.UserID)
+	var i EarnedAchievement
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.AchievementID,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getAllAchievements = `-- name: GetAllAchievements :many
 SELECT id, name, description, image_url, is_unique, bundle_id, owner_id, created_at, updated_at FROM achievements
 `

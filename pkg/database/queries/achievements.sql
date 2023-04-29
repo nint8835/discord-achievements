@@ -7,3 +7,10 @@ INSERT INTO achievements (
 
 -- name: GetAllAchievements :many
 SELECT * FROM achievements;
+
+-- name: CreateEarnedAchievement :one
+INSERT INTO earned_achievements (
+  achievement_id, user_id
+) VALUES (
+  ?, ?
+) RETURNING *;
