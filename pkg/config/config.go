@@ -14,6 +14,8 @@ type Config struct {
 	LogLevel string `split_words:"true" default:"info"`
 
 	BindAddr string `default:":12500" split_words:"true"`
+
+	DBPath string `default:"achievements.sqlite" split_words:"true"`
 }
 
 var Instance *Config
