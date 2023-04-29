@@ -2,6 +2,8 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
+
+	"github.com/nint8835/discord-achievements/pkg/config"
 )
 
 type App struct {
@@ -9,8 +11,7 @@ type App struct {
 }
 
 func (a *App) Serve() error {
-	// TODO: Make non-hardcoded once I implement config parsing
-	return a.echo.Start(":8080")
+	return a.echo.Start(config.Instance.BindAddr)
 }
 
 func New() (*App, error) {
