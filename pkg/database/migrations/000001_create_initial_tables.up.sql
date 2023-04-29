@@ -22,9 +22,11 @@ CREATE TABLE IF NOT EXISTS achievements (
     description TEXT,
     image_url TEXT,
     bundle_id INTEGER,
+    owner_id TEXT NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(bundle_id) REFERENCES achievement_bundles(id)
+    FOREIGN KEY(bundle_id) REFERENCES achievement_bundles(id),
+    FOREIGN KEY(owner_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS earned_achievements (

@@ -15,6 +15,7 @@ type Achievement struct {
 	Description sql.NullString `json:"description"`
 	ImageUrl    sql.NullString `json:"image_url"`
 	BundleID    sql.NullInt64  `json:"bundle_id"`
+	OwnerID     string         `json:"owner_id"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 }
