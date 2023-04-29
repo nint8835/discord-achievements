@@ -12,16 +12,17 @@ import (
 
 const createAchievement = `-- name: CreateAchievement :one
 INSERT INTO achievements (
-  name, description, image_url, bundle_id, owner_id
+  name, description, image_url, is_unique, bundle_id, owner_id
 ) VALUES (
-  ?, ?, ?, ?, ?
-) RETURNING id, name, description, image_url, bundle_id, owner_id, created_at, updated_at
+  ?, ?, ?, ?, ?, ?
+) RETURNING id, name, description, image_url, is_unique, bundle_id, owner_id, created_at, updated_at
 `
 
 type CreateAchievementParams struct {
 	Name        string         `json:"name"`
 	Description sql.NullString `json:"description"`
 	ImageUrl    sql.NullString `json:"image_url"`
+	IsUnique    bool           `json:"is_unique"`
 	BundleID    sql.NullInt64  `json:"bundle_id"`
 	OwnerID     string         `json:"owner_id"`
 }
@@ -31,6 +32,7 @@ func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementPa
 		arg.Name,
 		arg.Description,
 		arg.ImageUrl,
+		arg.IsUnique,
 		arg.BundleID,
 		arg.OwnerID,
 	)
@@ -40,6 +42,7 @@ func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementPa
 		&i.Name,
 		&i.Description,
 		&i.ImageUrl,
+		&i.IsUnique,
 		&i.BundleID,
 		&i.OwnerID,
 		&i.CreatedAt,
@@ -49,7 +52,7 @@ func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementPa
 }
 
 const getAllAchievements = `-- name: GetAllAchievements :many
-SELECT id, name, description, image_url, bundle_id, owner_id, created_at, updated_at FROM achievements
+SELECT id, name, description, image_url, is_unique, bundle_id, owner_id, created_at, updated_at FROM achievements
 `
 
 func (q *Queries) GetAllAchievements(ctx context.Context) ([]Achievement, error) {
@@ -66,6 +69,7 @@ func (q *Queries) GetAllAchievements(ctx context.Context) ([]Achievement, error)
 			&i.Name,
 			&i.Description,
 			&i.ImageUrl,
+			&i.IsUnique,
 			&i.BundleID,
 			&i.OwnerID,
 			&i.CreatedAt,

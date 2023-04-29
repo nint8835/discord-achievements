@@ -27,6 +27,7 @@ var createAchievementCmd = &cobra.Command{
 			Name        string
 			Description string
 			ImageUrl    string
+			IsUnique    bool
 		}{}
 
 		err = survey.Ask([]*survey.Question{
@@ -51,6 +52,10 @@ var createAchievementCmd = &cobra.Command{
 				Name:   "ImageURL",
 				Prompt: &survey.Input{Message: "Image URL:"},
 			},
+			{
+				Name:   "IsUnique",
+				Prompt: &survey.Confirm{Message: "Is unique:"},
+			},
 		}, &answers)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error getting input values")
@@ -68,6 +73,7 @@ var createAchievementCmd = &cobra.Command{
 			Name:        answers.Name,
 			Description: database.StringToNullString(answers.Description),
 			ImageUrl:    database.StringToNullString(answers.ImageUrl),
+			IsUnique:    answers.IsUnique,
 		})
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error creating achievement")

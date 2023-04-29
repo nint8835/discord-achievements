@@ -1,8 +1,8 @@
 -- name: CreateAchievement :one
 INSERT INTO achievements (
-  name, description, image_url, bundle_id, owner_id
+  name, description, image_url, is_unique, bundle_id, owner_id
 ) VALUES (
-  ?, ?, ?, ?, ?
+  ?, ?, ?, ?, ?, ?
 ) RETURNING *;
 
 -- name: GetAllAchievements :many

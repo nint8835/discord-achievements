@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS achievements (
     name TEXT NOT NULL,
     description TEXT,
     image_url TEXT,
+    is_unique BOOLEAN NOT NULL,
     bundle_id INTEGER,
     owner_id TEXT NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
