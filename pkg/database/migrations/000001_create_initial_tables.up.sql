@@ -1,10 +1,11 @@
-CREATE TABLE IF NOT EXISTS "users" (
+CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT NOT NULL,
-    discriminator TEXT NOT NULL
+    discriminator TEXT NOT NULL,
+    avatar_url TEXT
 );
 
-CREATE TABLE IF NOT EXISTS "achievement_bundles" (
+CREATE TABLE IF NOT EXISTS achievement_bundles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "achievement_bundles" (
     FOREIGN KEY(owner_id) REFERENCES users(id)
 );
 
-CREATE TABLE IF NOT EXISTS "achievements" (
+CREATE TABLE IF NOT EXISTS achievements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT,
@@ -26,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "achievements" (
     FOREIGN KEY(bundle_id) REFERENCES achievement_bundles(id)
 );
 
-CREATE TABLE IF NOT EXISTS "earned_achievements" (
+CREATE TABLE IF NOT EXISTS earned_achievements (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id TEXT NOT NULL,
     achievement_id INTEGER NOT NULL,
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "earned_achievements" (
     FOREIGN KEY(achievement_id) REFERENCES achievements(id)
 );
 
-CREATE TABLE IF NOT EXISTS "integrations" (
+CREATE TABLE IF NOT EXISTS integrations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     owner_id TEXT NOT NULL,
@@ -44,7 +45,7 @@ CREATE TABLE IF NOT EXISTS "integrations" (
     FOREIGN KEY(owner_id) REFERENCES users(id)
 );
 
-CREATE TABLE IF NOT EXISTS "integration_permissions" (
+CREATE TABLE IF NOT EXISTS integration_permissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     integration_id INTEGER NOT NULL,
     achievement_bundle_id INTEGER,
