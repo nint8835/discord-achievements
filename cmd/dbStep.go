@@ -13,8 +13,8 @@ import (
 
 var dbStepCmd = &cobra.Command{
 	Use: "step [number of steps]",
-	Example: `  Downgrade by one version: bogos db step -- -1
-  Upgrade by 3 versions: bogos db step 3`,
+	Example: `  Downgrade by one version: discord-achievements db step -- -1
+  Upgrade by 3 versions: discord-achievements db step 3`,
 	Short: "Perform a relative migration",
 	Long: `Perform a database migration of a certain number of steps relative to the current version.
 
