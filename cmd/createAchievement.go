@@ -56,14 +56,15 @@ var createAchievementCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Error getting input values")
 		}
 
-		var bundleID int64
+		var bundleID sql.NullInt64
 		if answers.BundleID != "" {
-			bundleID, _ = strconv.ParseInt(answers.BundleID, 10, 64)
+			bundleID.Int64, _ = strconv.ParseInt(answers.BundleID, 10, 64)
+			bundleID.Valid = true
 		}
 
 		achievement, err := queries.CreateAchievement(context.Background(), database.CreateAchievementParams{
 			OwnerID:     answers.OwnerID,
-			BundleID:    sql.NullInt64{Int64: bundleID, Valid: answers.BundleID != ""},
+			BundleID:    bundleID,
 			Name:        answers.Name,
 			Description: database.StringToNullString(answers.Description),
 			ImageUrl:    database.StringToNullString(answers.ImageUrl),

@@ -4,3 +4,6 @@ INSERT INTO achievements (
 ) VALUES (
   ?, ?, ?, ?, ?
 ) RETURNING *;
+
+-- name: GetAllAchievements :many
+SELECT * FROM achievements;

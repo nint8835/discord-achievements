@@ -47,3 +47,39 @@ func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementPa
 	)
 	return i, err
 }
+
+const getAllAchievements = `-- name: GetAllAchievements :many
+SELECT id, name, description, image_url, bundle_id, owner_id, created_at, updated_at FROM achievements
+`
+
+func (q *Queries) GetAllAchievements(ctx context.Context) ([]Achievement, error) {
+	rows, err := q.db.QueryContext(ctx, getAllAchievements)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Achievement
+	for rows.Next() {
+		var i Achievement
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.ImageUrl,
+			&i.BundleID,
+			&i.OwnerID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
