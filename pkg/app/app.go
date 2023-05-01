@@ -1,6 +1,9 @@
 package app
 
 import (
+	"embed"
+	"net/http"
+
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -11,6 +14,9 @@ import (
 
 	"github.com/nint8835/discord-achievements/pkg/config"
 )
+
+//go:embed static
+var staticFS embed.FS
 
 type App struct {
 	echo         *echo.Echo
@@ -23,6 +29,7 @@ func (a *App) Serve() error {
 
 func New() (*App, error) {
 	echoInst := echo.New()
+	echoInst.Renderer = NewEmbeddedTemplater()
 	echoInst.Use(session.Middleware(sessions.NewCookieStore(config.Instance.SessionSecret)))
 
 	logger := lecho.From(log.Logger, lecho.WithLevel(glog.INFO))
@@ -43,14 +50,13 @@ func New() (*App, error) {
 		},
 	}
 
+	echoInst.GET("/static/*", echo.WrapHandler(http.FileServer(http.FS(staticFS))))
+
 	echoInst.GET("/", func(c echo.Context) error {
 		sess := getSession(c)
 
-		if _, loggedIn := sess.Values["user_id"]; loggedIn {
-			return c.String(200, "Logged in")
-		} else {
-			return c.String(200, "Not logged in")
-		}
+		_, loggedIn := sess.Values["user_id"]
+		return c.Render(http.StatusOK, "index.gohtml", loggedIn)
 	})
 
 	echoInst.GET("/auth/login", appInst.handleLogin)
