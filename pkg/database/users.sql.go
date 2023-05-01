@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createOrUpdateUser = `-- name: CreateOrUpdateUser :one
@@ -19,10 +18,10 @@ INSERT OR REPLACE INTO users (
 `
 
 type CreateOrUpdateUserParams struct {
-	ID            string         `json:"id"`
-	Username      string         `json:"username"`
-	Discriminator string         `json:"discriminator"`
-	AvatarUrl     sql.NullString `json:"avatar_url"`
+	ID            string `json:"id"`
+	Username      string `json:"username"`
+	Discriminator string `json:"discriminator"`
+	AvatarUrl     string `json:"avatar_url"`
 }
 
 func (q *Queries) CreateOrUpdateUser(ctx context.Context, arg CreateOrUpdateUserParams) (User, error) {
@@ -51,10 +50,10 @@ INSERT INTO users (
 `
 
 type CreateUserParams struct {
-	ID            string         `json:"id"`
-	Username      string         `json:"username"`
-	Discriminator string         `json:"discriminator"`
-	AvatarUrl     sql.NullString `json:"avatar_url"`
+	ID            string `json:"id"`
+	Username      string `json:"username"`
+	Discriminator string `json:"discriminator"`
+	AvatarUrl     string `json:"avatar_url"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {

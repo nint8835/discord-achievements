@@ -28,7 +28,7 @@ func syncUsersCommand(sess *discordgo.Session, interaction *discordgo.Interactio
 				ID:            member.User.ID,
 				Username:      member.User.Username,
 				Discriminator: member.User.Discriminator,
-				AvatarUrl:     database.StringToNullString(member.User.AvatarURL("")),
+				AvatarUrl:     member.User.AvatarURL(""),
 			})
 			if err != nil {
 				return fmt.Errorf("error syncing user: %w", err)

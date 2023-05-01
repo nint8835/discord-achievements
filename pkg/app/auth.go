@@ -43,7 +43,7 @@ func (a *App) handleCallback(c echo.Context) error {
 		ID:            user.ID,
 		Username:      user.Username,
 		Discriminator: user.Discriminator,
-		AvatarUrl:     database.StringToNullString(user.AvatarURL("")),
+		AvatarUrl:     user.AvatarURL(""),
 	})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error creating or updating user: %s", err))

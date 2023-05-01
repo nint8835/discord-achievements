@@ -18,6 +18,7 @@ var createUserCmd = &cobra.Command{
 			ID            string
 			Username      string
 			Discriminator string
+			AvatarUrl     string
 		}{}
 
 		err := survey.Ask([]*survey.Question{
@@ -33,6 +34,10 @@ var createUserCmd = &cobra.Command{
 				Name:   "Discriminator",
 				Prompt: &survey.Input{Message: "Discriminator:"},
 			},
+			{
+				Name:   "AvatarUrl",
+				Prompt: &survey.Input{Message: "Avatar URL:"},
+			},
 		}, &answers)
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error getting input values")
@@ -42,6 +47,7 @@ var createUserCmd = &cobra.Command{
 			ID:            answers.ID,
 			Username:      answers.Username,
 			Discriminator: answers.Discriminator,
+			AvatarUrl:     answers.AvatarUrl,
 		})
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error creating user")
