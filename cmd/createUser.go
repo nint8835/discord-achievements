@@ -14,18 +14,13 @@ var createUserCmd = &cobra.Command{
 	Use:   "user",
 	Short: "Create a new user",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			ID            string
 			Username      string
 			Discriminator string
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "ID",
 				Prompt: &survey.Input{Message: "ID:"},
@@ -43,7 +38,7 @@ var createUserCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Error getting input values")
 		}
 
-		user, err := queries.CreateUser(context.Background(), database.CreateUserParams{
+		user, err := database.Instance.CreateUser(context.Background(), database.CreateUserParams{
 			ID:            answers.ID,
 			Username:      answers.Username,
 			Discriminator: answers.Discriminator,

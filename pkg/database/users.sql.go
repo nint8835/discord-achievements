@@ -10,6 +10,38 @@ import (
 	"database/sql"
 )
 
+const createOrUpdateUser = `-- name: CreateOrUpdateUser :one
+INSERT OR REPLACE INTO users (
+   id, username, discriminator, avatar_url
+) VALUES (
+    ?, ?, ?, ?
+ ) RETURNING id, username, discriminator, avatar_url
+`
+
+type CreateOrUpdateUserParams struct {
+	ID            string         `json:"id"`
+	Username      string         `json:"username"`
+	Discriminator string         `json:"discriminator"`
+	AvatarUrl     sql.NullString `json:"avatar_url"`
+}
+
+func (q *Queries) CreateOrUpdateUser(ctx context.Context, arg CreateOrUpdateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, createOrUpdateUser,
+		arg.ID,
+		arg.Username,
+		arg.Discriminator,
+		arg.AvatarUrl,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Discriminator,
+		&i.AvatarUrl,
+	)
+	return i, err
+}
+
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
    id, username, discriminator, avatar_url

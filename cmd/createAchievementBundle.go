@@ -14,11 +14,6 @@ var createAchievementBundleCmd = &cobra.Command{
 	Use:   "achievement-bundle",
 	Short: "Create a new achievement bundle",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			OwnerID     string
 			Name        string
@@ -26,10 +21,10 @@ var createAchievementBundleCmd = &cobra.Command{
 			ImageUrl    string
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "OwnerID",
-				Prompt: userPrompt(queries, "Owner:"),
+				Prompt: userPrompt("Owner:"),
 			},
 			{
 				Name:     "Name",
@@ -49,7 +44,7 @@ var createAchievementBundleCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Error getting input values")
 		}
 
-		bundle, err := queries.CreateAchievementBundle(context.Background(), database.CreateAchievementBundleParams{
+		bundle, err := database.Instance.CreateAchievementBundle(context.Background(), database.CreateAchievementBundleParams{
 			OwnerID:     answers.OwnerID,
 			Name:        answers.Name,
 			Description: database.StringToNullString(answers.Description),

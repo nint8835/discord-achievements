@@ -16,11 +16,6 @@ var createAchievementCmd = &cobra.Command{
 	Use:   "achievement",
 	Short: "Create a new achievement",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			OwnerID     string
 			BundleID    string
@@ -30,14 +25,14 @@ var createAchievementCmd = &cobra.Command{
 			IsUnique    bool
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "OwnerID",
-				Prompt: userPrompt(queries, "Owner:"),
+				Prompt: userPrompt("Owner:"),
 			},
 			{
 				Name:   "BundleID",
-				Prompt: achievementBundlePrompt(queries, "Bundle:", true),
+				Prompt: achievementBundlePrompt("Bundle:", true),
 			},
 			{
 				Name:     "Name",
@@ -67,7 +62,7 @@ var createAchievementCmd = &cobra.Command{
 			bundleID.Valid = true
 		}
 
-		achievement, err := queries.CreateAchievement(context.Background(), database.CreateAchievementParams{
+		achievement, err := database.Instance.CreateAchievement(context.Background(), database.CreateAchievementParams{
 			OwnerID:     answers.OwnerID,
 			BundleID:    bundleID,
 			Name:        answers.Name,

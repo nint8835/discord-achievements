@@ -7,6 +7,7 @@ import (
 
 	"github.com/nint8835/discord-achievements/pkg/app"
 	"github.com/nint8835/discord-achievements/pkg/bot"
+	"github.com/nint8835/discord-achievements/pkg/database"
 )
 
 var runCmd = &cobra.Command{
@@ -14,6 +15,11 @@ var runCmd = &cobra.Command{
 	Short: "Run the app",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
+		err := database.Connect()
+		if err != nil {
+			log.Fatalf("error connecting to database: %s", err)
+		}
+
 		appInst, err := app.New()
 		if err != nil {
 			log.Fatalf("error creating app: %s", err)

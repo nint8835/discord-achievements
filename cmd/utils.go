@@ -10,8 +10,8 @@ import (
 	"github.com/nint8835/discord-achievements/pkg/database"
 )
 
-func userPrompt(db *database.Queries, prompt string) *survey.Select {
-	users, err := db.GetAllUsers(context.Background())
+func userPrompt(prompt string) *survey.Select {
+	users, err := database.Instance.GetAllUsers(context.Background())
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error getting users")
 	}
@@ -33,8 +33,8 @@ func userPrompt(db *database.Queries, prompt string) *survey.Select {
 	}
 }
 
-func achievementBundlePrompt(db *database.Queries, prompt string, nullable bool) *survey.Select {
-	bundles, err := db.GetAllAchievementBundles(context.Background())
+func achievementBundlePrompt(prompt string, nullable bool) *survey.Select {
+	bundles, err := database.Instance.GetAllAchievementBundles(context.Background())
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error getting bundles")
 	}
@@ -61,8 +61,8 @@ func achievementBundlePrompt(db *database.Queries, prompt string, nullable bool)
 	}
 }
 
-func achievementPrompt(db *database.Queries, prompt string, nullable bool) *survey.Select {
-	achievements, err := db.GetAllAchievements(context.Background())
+func achievementPrompt(prompt string, nullable bool) *survey.Select {
+	achievements, err := database.Instance.GetAllAchievements(context.Background())
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error getting achievements")
 	}
@@ -89,8 +89,8 @@ func achievementPrompt(db *database.Queries, prompt string, nullable bool) *surv
 	}
 }
 
-func integrationPrompt(db *database.Queries, prompt string) *survey.Select {
-	integrations, err := db.GetAllIntegrations(context.Background())
+func integrationPrompt(prompt string) *survey.Select {
+	integrations, err := database.Instance.GetAllIntegrations(context.Background())
 	if err != nil {
 		log.Fatal().Err(err).Msg("Error getting integrations")
 	}

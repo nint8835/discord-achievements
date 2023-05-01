@@ -14,11 +14,6 @@ var createIntegrationCmd = &cobra.Command{
 	Use:   "integration",
 	Short: "Create a new integration",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			OwnerID     string
 			Name        string
@@ -26,10 +21,10 @@ var createIntegrationCmd = &cobra.Command{
 			ImageUrl    string
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "OwnerID",
-				Prompt: userPrompt(queries, "Owner:"),
+				Prompt: userPrompt("Owner:"),
 			},
 			{
 				Name:     "Name",
@@ -41,7 +36,7 @@ var createIntegrationCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Error getting input values")
 		}
 
-		integration, err := queries.CreateIntegration(context.Background(), database.CreateIntegrationParams{
+		integration, err := database.Instance.CreateIntegration(context.Background(), database.CreateIntegrationParams{
 			OwnerID: answers.OwnerID,
 			Name:    answers.Name,
 		})

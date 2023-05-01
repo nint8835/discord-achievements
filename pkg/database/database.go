@@ -8,11 +8,15 @@ import (
 	"github.com/nint8835/discord-achievements/pkg/config"
 )
 
-func Connect() (*Queries, error) {
+var Instance *Queries
+
+func Connect() error {
 	db, err := sql.Open("sqlite3", config.Instance.DBPath)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return New(db), nil
+	Instance = New(db)
+
+	return nil
 }

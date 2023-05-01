@@ -15,24 +15,19 @@ var createEarnedAchievementCmd = &cobra.Command{
 	Use:   "earned-achievement",
 	Short: "Create a new earned achievement",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			AchievementID string
 			UserID        string
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "AchievementID",
-				Prompt: achievementPrompt(queries, "Achievement:", false),
+				Prompt: achievementPrompt("Achievement:", false),
 			},
 			{
 				Name:   "UserID",
-				Prompt: userPrompt(queries, "User:"),
+				Prompt: userPrompt("User:"),
 			},
 		}, &answers)
 		if err != nil {
@@ -41,7 +36,7 @@ var createEarnedAchievementCmd = &cobra.Command{
 
 		achievementId, _ := strconv.ParseInt(answers.AchievementID, 10, 64)
 
-		earnedAchievement, err := queries.CreateEarnedAchievement(context.Background(), database.CreateEarnedAchievementParams{
+		earnedAchievement, err := database.Instance.CreateEarnedAchievement(context.Background(), database.CreateEarnedAchievementParams{
 			AchievementID: achievementId,
 			UserID:        answers.UserID,
 		})

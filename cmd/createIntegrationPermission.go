@@ -16,29 +16,24 @@ var createIntegrationPermissionCmd = &cobra.Command{
 	Use:   "integration-permission",
 	Short: "Create a new integration permission",
 	Run: func(cmd *cobra.Command, args []string) {
-		queries, err := database.Connect()
-		if err != nil {
-			log.Fatal().Err(err).Msg("Error connecting to database")
-		}
-
 		answers := struct {
 			IntegrationID string
 			AchievementID string
 			BundleID      string
 		}{}
 
-		err = survey.Ask([]*survey.Question{
+		err := survey.Ask([]*survey.Question{
 			{
 				Name:   "IntegrationID",
-				Prompt: integrationPrompt(queries, "Integration:"),
+				Prompt: integrationPrompt("Integration:"),
 			},
 			{
 				Name:   "AchievementID",
-				Prompt: achievementPrompt(queries, "Achievement:", true),
+				Prompt: achievementPrompt("Achievement:", true),
 			},
 			{
 				Name:   "BundleID",
-				Prompt: achievementBundlePrompt(queries, "Bundle:", true),
+				Prompt: achievementBundlePrompt("Bundle:", true),
 			},
 		}, &answers)
 		if err != nil {
@@ -59,7 +54,7 @@ var createIntegrationPermissionCmd = &cobra.Command{
 			bundleId.Valid = true
 		}
 
-		integrationPermission, err := queries.CreateIntegrationPermission(context.Background(), database.CreateIntegrationPermissionParams{
+		integrationPermission, err := database.Instance.CreateIntegrationPermission(context.Background(), database.CreateIntegrationPermissionParams{
 			IntegrationID:       integrationId,
 			AchievementID:       achievementId,
 			AchievementBundleID: bundleId,
