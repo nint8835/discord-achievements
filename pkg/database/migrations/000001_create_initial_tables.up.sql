@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT NOT NULL,
-    discriminator TEXT NOT NULL,
     avatar_url TEXT NOT NULL
 );
 

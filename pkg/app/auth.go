@@ -40,10 +40,9 @@ func (a *App) handleCallback(c echo.Context) error {
 	}
 
 	dbUser, err := database.Instance.CreateOrUpdateUser(c.Request().Context(), database.CreateOrUpdateUserParams{
-		ID:            user.ID,
-		Username:      user.Username,
-		Discriminator: user.Discriminator,
-		AvatarUrl:     user.AvatarURL(""),
+		ID:        user.ID,
+		Username:  user.Username,
+		AvatarUrl: user.AvatarURL(""),
 	})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error creating or updating user: %s", err))

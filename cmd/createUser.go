@@ -15,10 +15,9 @@ var createUserCmd = &cobra.Command{
 	Short: "Create a new user",
 	Run: func(cmd *cobra.Command, args []string) {
 		answers := struct {
-			ID            string
-			Username      string
-			Discriminator string
-			AvatarUrl     string
+			ID        string
+			Username  string
+			AvatarUrl string
 		}{}
 
 		err := survey.Ask([]*survey.Question{
@@ -31,10 +30,6 @@ var createUserCmd = &cobra.Command{
 				Prompt: &survey.Input{Message: "Username:"},
 			},
 			{
-				Name:   "Discriminator",
-				Prompt: &survey.Input{Message: "Discriminator:"},
-			},
-			{
 				Name:   "AvatarUrl",
 				Prompt: &survey.Input{Message: "Avatar URL:"},
 			},
@@ -44,10 +39,9 @@ var createUserCmd = &cobra.Command{
 		}
 
 		user, err := database.Instance.CreateUser(context.Background(), database.CreateUserParams{
-			ID:            answers.ID,
-			Username:      answers.Username,
-			Discriminator: answers.Discriminator,
-			AvatarUrl:     answers.AvatarUrl,
+			ID:        answers.ID,
+			Username:  answers.Username,
+			AvatarUrl: answers.AvatarUrl,
 		})
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error creating user")

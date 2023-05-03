@@ -21,7 +21,7 @@ func userPrompt(prompt string) *survey.Select {
 
 	for _, user := range users {
 		ids = append(ids, user.ID)
-		usernames = append(usernames, fmt.Sprintf("%s#%s", user.Username, user.Discriminator))
+		usernames = append(usernames, user.Username)
 	}
 
 	return &survey.Select{

@@ -11,70 +11,48 @@ import (
 
 const createOrUpdateUser = `-- name: CreateOrUpdateUser :one
 INSERT OR REPLACE INTO users (
-   id, username, discriminator, avatar_url
+   id, username, avatar_url
 ) VALUES (
-    ?, ?, ?, ?
- ) RETURNING id, username, discriminator, avatar_url
+    ?, ?, ?
+ ) RETURNING id, username, avatar_url
 `
 
 type CreateOrUpdateUserParams struct {
-	ID            string `json:"id"`
-	Username      string `json:"username"`
-	Discriminator string `json:"discriminator"`
-	AvatarUrl     string `json:"avatar_url"`
+	ID        string `json:"id"`
+	Username  string `json:"username"`
+	AvatarUrl string `json:"avatar_url"`
 }
 
 func (q *Queries) CreateOrUpdateUser(ctx context.Context, arg CreateOrUpdateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createOrUpdateUser,
-		arg.ID,
-		arg.Username,
-		arg.Discriminator,
-		arg.AvatarUrl,
-	)
+	row := q.db.QueryRowContext(ctx, createOrUpdateUser, arg.ID, arg.Username, arg.AvatarUrl)
 	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Username,
-		&i.Discriminator,
-		&i.AvatarUrl,
-	)
+	err := row.Scan(&i.ID, &i.Username, &i.AvatarUrl)
 	return i, err
 }
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
-   id, username, discriminator, avatar_url
+   id, username, avatar_url
 ) VALUES (
-    ?, ?, ?, ?
- ) RETURNING id, username, discriminator, avatar_url
+    ?, ?, ?
+ ) RETURNING id, username, avatar_url
 `
 
 type CreateUserParams struct {
-	ID            string `json:"id"`
-	Username      string `json:"username"`
-	Discriminator string `json:"discriminator"`
-	AvatarUrl     string `json:"avatar_url"`
+	ID        string `json:"id"`
+	Username  string `json:"username"`
+	AvatarUrl string `json:"avatar_url"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, createUser,
-		arg.ID,
-		arg.Username,
-		arg.Discriminator,
-		arg.AvatarUrl,
-	)
+	row := q.db.QueryRowContext(ctx, createUser, arg.ID, arg.Username, arg.AvatarUrl)
 	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Username,
-		&i.Discriminator,
-		&i.AvatarUrl,
-	)
+	err := row.Scan(&i.ID, &i.Username, &i.AvatarUrl)
 	return i, err
 }
 
 const getAllUsers = `-- name: GetAllUsers :many
-SELECT id, username, discriminator, avatar_url FROM users
+SELECT id, username, avatar_url FROM users
 `
 
 func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
@@ -86,12 +64,7 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	var items []User
 	for rows.Next() {
 		var i User
-		if err := rows.Scan(
-			&i.ID,
-			&i.Username,
-			&i.Discriminator,
-			&i.AvatarUrl,
-		); err != nil {
+		if err := rows.Scan(&i.ID, &i.Username, &i.AvatarUrl); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

@@ -25,10 +25,9 @@ func syncUsersCommand(sess *discordgo.Session, interaction *discordgo.Interactio
 
 		for _, member := range members {
 			_, err = database.Instance.CreateOrUpdateUser(context.Background(), database.CreateOrUpdateUserParams{
-				ID:            member.User.ID,
-				Username:      member.User.Username,
-				Discriminator: member.User.Discriminator,
-				AvatarUrl:     member.User.AvatarURL(""),
+				ID:        member.User.ID,
+				Username:  member.User.Username,
+				AvatarUrl: member.User.AvatarURL(""),
 			})
 			if err != nil {
 				return fmt.Errorf("error syncing user: %w", err)

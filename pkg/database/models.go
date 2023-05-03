@@ -55,8 +55,7 @@ type IntegrationPermission struct {
 }
 
 type User struct {
-	ID            string `json:"id"`
-	Username      string `json:"username"`
-	Discriminator string `json:"discriminator"`
-	AvatarUrl     string `json:"avatar_url"`
+	ID        string `json:"id"`
+	Username  string `json:"username"`
+	AvatarUrl string `json:"avatar_url"`
 }
