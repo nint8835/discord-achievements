@@ -53,3 +53,14 @@ func (a *App) handleCallback(c echo.Context) error {
 
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
 }
+
+func (a *App) handleLogout(c echo.Context) error {
+	sess := getSession(c)
+	delete(sess.Values, "user_id")
+	err := sess.Save(c.Request(), c.Response())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error saving session: %s", err))
+	}
+
+	return c.Redirect(http.StatusTemporaryRedirect, "/")
+}

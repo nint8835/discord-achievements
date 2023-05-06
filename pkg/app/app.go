@@ -67,6 +67,7 @@ func New() (*App, error) {
 
 	echoInst.GET("/auth/login", appInst.handleLogin)
 	echoInst.GET("/auth/callback", appInst.handleCallback)
+	echoInst.GET("/auth/logout", appInst.handleLogout)
 
 	return appInst, nil
 }
