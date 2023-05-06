@@ -1,10 +1,18 @@
 import { BugAntIcon } from '@heroicons/react/24/solid';
 import React from 'react';
-import { Link, useRouteError } from 'react-router-dom';
+import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 export default function RouterError() {
     const error = useRouteError();
     console.error(error);
+
+    let errorText: string;
+
+    if (isRouteErrorResponse(error)) {
+        errorText = error.statusText;
+    } else {
+        errorText = error.message || 'Unknown error';
+    }
 
     return (
         <div className="flex h-[100vh] w-[100vw] items-center justify-center ">
@@ -26,9 +34,7 @@ export default function RouterError() {
                         to go home.
                         <br />
                         Error message:{' '}
-                        <span className="rounded-md bg-gray-800 bg-opacity-50 p-0.5 font-mono">
-                            {error.statusText || error.Message}
-                        </span>
+                        <span className="rounded-md bg-gray-800 bg-opacity-50 p-0.5 font-mono">{errorText}</span>
                     </div>
                 </div>
             </div>
