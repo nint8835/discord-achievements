@@ -59,7 +59,7 @@ function Navbar() {
                     </button>
                 </div>
             </div>
-            <div className={`${showMobileMenu ? 'flex' : 'hidden'} flex-col gap-2 px-2 pt-2`}>
+            <div className={`${showMobileMenu ? 'flex' : 'hidden'} flex-col gap-2 px-2 pt-2 md:hidden `}>
                 {items.map(navBarLink)}
             </div>
         </nav>
