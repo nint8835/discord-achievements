@@ -39,11 +39,7 @@ func (a *App) handleCallback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error fetching user details: %s", err))
 	}
 
-	dbUser, err := database.Instance.CreateOrUpdateUser(c.Request().Context(), database.CreateOrUpdateUserParams{
-		ID:        user.ID,
-		Username:  user.Username,
-		AvatarUrl: user.AvatarURL(""),
-	})
+	dbUser, err := database.CreateOrUpdateDiscordUser(c.Request().Context(), user)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error creating or updating user: %s", err))
 	}
