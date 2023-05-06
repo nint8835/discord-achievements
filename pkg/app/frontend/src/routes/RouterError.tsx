@@ -15,8 +15,8 @@ export default function RouterError() {
     }
 
     return (
-        <div className="flex h-[100vh] w-[100vw] items-center justify-center ">
-            <div className="flex flex-col rounded-lg bg-gradient-to-br from-gray-900 via-purple-900 to-violet-600 text-zinc-100 md:flex-row">
+        <div className="flex h-[100vh] w-[100vw] items-center justify-center bg-zinc-800">
+            <div className="flex flex-col rounded-lg border-2 border-black bg-gradient-to-br from-gray-900 via-purple-900 to-violet-600 text-zinc-100 md:flex-row">
                 <div className="flex items-center justify-center p-4">
                     <BugAntIcon className="h-20 w-20" />
                 </div>
