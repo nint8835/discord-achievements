@@ -2,11 +2,19 @@ import '@fontsource/ibm-plex-sans';
 import '@fontsource/ibm-plex-sans/700.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.js';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
+import Root from './routes/Root';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Root />,
+    },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <App />
+        <RouterProvider router={router} />
     </React.StrictMode>,
 );

@@ -1,12 +1,10 @@
 import React from 'react';
-import Navbar from './components/Navbar';
+import Navbar from '../components/Navbar';
 
-function App() {
+export default function Root() {
     return (
         <>
             <Navbar />
         </>
     );
 }
-
-export default App;

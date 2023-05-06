@@ -1,16 +1,24 @@
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 type NavBarItem = {
     name: string;
     href: string;
+    isExternal?: boolean;
 };
 
 function navBarLink(item: NavBarItem) {
     return (
-        <a href={item.href} className="transition-colors hover:text-purple-400">
+        <NavLink
+            to={item.href}
+            className={({ isActive, isPending }) =>
+                'transition-colors hover:text-purple-400' + (isActive ? ' underline' : '')
+            }
+            reloadDocument={item.isExternal}
+        >
             {item.name}
-        </a>
+        </NavLink>
     );
 }
 
@@ -23,10 +31,12 @@ function Navbar() {
         {
             name: 'Login',
             href: '/auth/login',
+            isExternal: true,
         },
         {
             name: 'Logout',
             href: '/auth/logout',
+            isExternal: true,
         },
     ];
 
