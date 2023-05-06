@@ -77,3 +77,14 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	}
 	return items, nil
 }
+
+const getUser = `-- name: GetUser :one
+SELECT id, username, avatar_url FROM users WHERE id = ? LIMIT 1
+`
+
+func (q *Queries) GetUser(ctx context.Context, id string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, id)
+	var i User
+	err := row.Scan(&i.ID, &i.Username, &i.AvatarUrl)
+	return i, err
+}

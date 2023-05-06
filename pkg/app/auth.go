@@ -10,6 +10,21 @@ import (
 	"github.com/nint8835/discord-achievements/pkg/database"
 )
 
+func (a *App) handleCurrentUser(c echo.Context) error {
+	sess := getSession(c)
+
+	if _, loggedIn := sess.Values["user_id"]; !loggedIn {
+		return c.JSON(http.StatusOK, nil)
+	}
+
+	user, err := database.Instance.GetUser(c.Request().Context(), sess.Values["user_id"].(string))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, fmt.Sprintf("error fetching user: %s", err))
+	}
+
+	return c.JSON(http.StatusOK, user)
+}
+
 func (a *App) handleLogin(c echo.Context) error {
 	sess := getSession(c)
 

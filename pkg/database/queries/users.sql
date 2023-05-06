@@ -14,3 +14,6 @@ INSERT OR REPLACE INTO users (
 ) VALUES (
     ?, ?, ?
  ) RETURNING *;
+
+-- name: GetUser :one
+SELECT * FROM users WHERE id = ? LIMIT 1;
