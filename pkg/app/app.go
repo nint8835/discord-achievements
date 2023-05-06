@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	glog "github.com/labstack/gommon/log"
 	"github.com/rs/zerolog/log"
 	"github.com/ziflex/lecho/v3"
@@ -15,8 +16,8 @@ import (
 	"github.com/nint8835/discord-achievements/pkg/config"
 )
 
-//go:embed static
-var staticFS embed.FS
+//go:embed frontend/dist
+var frontendFS embed.FS
 
 type App struct {
 	echo         *echo.Echo
@@ -29,8 +30,22 @@ func (a *App) Serve() error {
 
 func New() (*App, error) {
 	echoInst := echo.New()
-	echoInst.Renderer = NewEmbeddedTemplater()
 	echoInst.Use(session.Middleware(sessions.NewCookieStore(config.Instance.SessionSecret)))
+
+	var configuredFrontendFS http.FileSystem
+	if config.Instance.UseBundledAssets {
+		configuredFrontendFS = http.FS(frontendFS)
+	} else {
+		configuredFrontendFS = http.Dir("./pkg/app/")
+	}
+
+	echoInst.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:       "frontend/dist",
+		Index:      "index.html",
+		Browse:     false,
+		HTML5:      true,
+		Filesystem: configuredFrontendFS,
+	}))
 
 	logger := lecho.From(log.Logger, lecho.WithLevel(glog.INFO))
 	echoInst.Logger = logger
@@ -49,15 +64,6 @@ func New() (*App, error) {
 			},
 		},
 	}
-
-	echoInst.GET("/static/*", echo.WrapHandler(http.FileServer(http.FS(staticFS))))
-
-	echoInst.GET("/", func(c echo.Context) error {
-		sess := getSession(c)
-
-		_, loggedIn := sess.Values["user_id"]
-		return c.Render(http.StatusOK, "index.gohtml", loggedIn)
-	})
 
 	echoInst.GET("/auth/login", appInst.handleLogin)
 	echoInst.GET("/auth/callback", appInst.handleCallback)

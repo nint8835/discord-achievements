@@ -13,8 +13,9 @@ import (
 type Config struct {
 	LogLevel string `split_words:"true" default:"info"`
 
-	BindAddr      string `default:":12500" split_words:"true"`
-	SessionSecret []byte `default:"top-secret" split_words:"true"`
+	BindAddr         string `default:":12500" split_words:"true"`
+	SessionSecret    []byte `default:"top-secret" split_words:"true"`
+	UseBundledAssets bool   `default:"true" split_words:"true"`
 
 	DBPath string `default:"achievements.sqlite" split_words:"true"`
 
