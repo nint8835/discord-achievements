@@ -54,7 +54,7 @@ function Navbar() {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     return (
-        <nav className="bg-zinc-800 py-2 text-zinc-50">
+        <nav className="fixed w-full bg-zinc-800 py-2 text-zinc-50">
             <div className="container mx-auto flex justify-between px-2">
                 <div className="text-xl font-bold">
                     <a href="/">discord-achievements</a>
