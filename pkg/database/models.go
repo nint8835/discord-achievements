@@ -10,25 +10,25 @@ import (
 )
 
 type Achievement struct {
-	ID          int64          `json:"id"`
-	Name        string         `json:"name"`
-	Description sql.NullString `json:"description"`
-	ImageUrl    sql.NullString `json:"image_url"`
-	IsUnique    bool           `json:"is_unique"`
-	BundleID    sql.NullInt64  `json:"bundle_id"`
-	OwnerID     string         `json:"owner_id"`
-	CreatedAt   time.Time      `json:"created_at"`
-	UpdatedAt   time.Time      `json:"updated_at"`
+	ID          int64         `json:"id"`
+	Name        string        `json:"name"`
+	Description NullString    `json:"description"`
+	ImageUrl    NullString    `json:"image_url"`
+	IsUnique    bool          `json:"is_unique"`
+	BundleID    sql.NullInt64 `json:"bundle_id"`
+	OwnerID     string        `json:"owner_id"`
+	CreatedAt   time.Time     `json:"created_at"`
+	UpdatedAt   time.Time     `json:"updated_at"`
 }
 
 type AchievementBundle struct {
-	ID          int64          `json:"id"`
-	Name        string         `json:"name"`
-	Description sql.NullString `json:"description"`
-	ImageUrl    sql.NullString `json:"image_url"`
-	OwnerID     string         `json:"owner_id"`
-	CreatedAt   time.Time      `json:"created_at"`
-	UpdatedAt   time.Time      `json:"updated_at"`
+	ID          int64      `json:"id"`
+	Name        string     `json:"name"`
+	Description NullString `json:"description"`
+	ImageUrl    NullString `json:"image_url"`
+	OwnerID     string     `json:"owner_id"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 }
 
 type EarnedAchievement struct {

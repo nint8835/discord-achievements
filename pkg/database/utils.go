@@ -7,8 +7,13 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func StringToNullString(s string) sql.NullString {
-	return sql.NullString{String: s, Valid: s != ""}
+func StringToNullString(s string) NullString {
+	return NullString{
+		sql.NullString{
+			String: s,
+			Valid:  s != "",
+		},
+	}
 }
 
 // CreateOrUpdateDiscordUser creates or updates a user in the database based on the given discordgo.User

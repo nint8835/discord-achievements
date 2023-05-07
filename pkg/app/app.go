@@ -71,5 +71,8 @@ func New() (*App, error) {
 	authGroup.GET("/callback", appInst.handleCallback)
 	authGroup.GET("/logout", appInst.handleLogout)
 
+	achievementBundleGroup := echoInst.Group("/achievement-bundles")
+	achievementBundleGroup.GET("/owned", appInst.handleOwnedBundles)
+
 	return appInst, nil
 }

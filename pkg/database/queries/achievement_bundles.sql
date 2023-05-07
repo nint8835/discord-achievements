@@ -7,3 +7,6 @@ INSERT INTO achievement_bundles (
 
 -- name: GetAllAchievementBundles :many
 SELECT * FROM achievement_bundles;
+
+-- name: GetAchievementBundlesOwnedByUser :many
+SELECT * FROM achievement_bundles WHERE owner_id = ?;

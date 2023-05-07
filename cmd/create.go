@@ -10,7 +10,7 @@ import (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create new resources",
-	PreRun: func(cmd *cobra.Command, args []string) {
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		err := database.Connect()
 		if err != nil {
 			log.Fatal().Err(err).Msg("Error connecting to database")

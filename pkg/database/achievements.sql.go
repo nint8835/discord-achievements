@@ -19,12 +19,12 @@ INSERT INTO achievements (
 `
 
 type CreateAchievementParams struct {
-	Name        string         `json:"name"`
-	Description sql.NullString `json:"description"`
-	ImageUrl    sql.NullString `json:"image_url"`
-	IsUnique    bool           `json:"is_unique"`
-	BundleID    sql.NullInt64  `json:"bundle_id"`
-	OwnerID     string         `json:"owner_id"`
+	Name        string        `json:"name"`
+	Description NullString    `json:"description"`
+	ImageUrl    NullString    `json:"image_url"`
+	IsUnique    bool          `json:"is_unique"`
+	BundleID    sql.NullInt64 `json:"bundle_id"`
+	OwnerID     string        `json:"owner_id"`
 }
 
 func (q *Queries) CreateAchievement(ctx context.Context, arg CreateAchievementParams) (Achievement, error) {

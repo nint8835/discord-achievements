@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createAchievementBundle = `-- name: CreateAchievementBundle :one
@@ -19,10 +18,10 @@ INSERT INTO achievement_bundles (
 `
 
 type CreateAchievementBundleParams struct {
-	Name        string         `json:"name"`
-	Description sql.NullString `json:"description"`
-	ImageUrl    sql.NullString `json:"image_url"`
-	OwnerID     string         `json:"owner_id"`
+	Name        string     `json:"name"`
+	Description NullString `json:"description"`
+	ImageUrl    NullString `json:"image_url"`
+	OwnerID     string     `json:"owner_id"`
 }
 
 func (q *Queries) CreateAchievementBundle(ctx context.Context, arg CreateAchievementBundleParams) (AchievementBundle, error) {
@@ -43,6 +42,41 @@ func (q *Queries) CreateAchievementBundle(ctx context.Context, arg CreateAchieve
 		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const getAchievementBundlesOwnedByUser = `-- name: GetAchievementBundlesOwnedByUser :many
+SELECT id, name, description, image_url, owner_id, created_at, updated_at FROM achievement_bundles WHERE owner_id = ?
+`
+
+func (q *Queries) GetAchievementBundlesOwnedByUser(ctx context.Context, ownerID string) ([]AchievementBundle, error) {
+	rows, err := q.db.QueryContext(ctx, getAchievementBundlesOwnedByUser, ownerID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []AchievementBundle
+	for rows.Next() {
+		var i AchievementBundle
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.ImageUrl,
+			&i.OwnerID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getAllAchievementBundles = `-- name: GetAllAchievementBundles :many
