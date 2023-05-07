@@ -1,6 +1,8 @@
 import { Bars3Icon } from '@heroicons/react/24/solid';
+import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { getCurrentUser } from '../queries/user';
 
 type NavBarItem = {
     name: string;
@@ -16,6 +18,7 @@ function navBarLink(item: NavBarItem) {
                 'transition-colors hover:text-purple-400' + (isActive ? ' underline' : '')
             }
             reloadDocument={item.isExternal}
+            key={item.name}
         >
             {item.name}
         </NavLink>
@@ -23,22 +26,30 @@ function navBarLink(item: NavBarItem) {
 }
 
 function Navbar() {
+    const currentUserQuery = useQuery({ queryKey: ['currentUser'], queryFn: getCurrentUser });
+
     const items: NavBarItem[] = [
         {
             name: 'Home',
             href: '/',
         },
-        {
-            name: 'Login',
-            href: '/auth/login',
-            isExternal: true,
-        },
-        {
-            name: 'Logout',
-            href: '/auth/logout',
-            isExternal: true,
-        },
     ];
+
+    if (currentUserQuery.isFetched) {
+        if (!currentUserQuery.data) {
+            items.push({
+                name: 'Login',
+                href: '/auth/login',
+                isExternal: true,
+            });
+        } else {
+            items.push({
+                name: 'Logout',
+                href: '/auth/logout',
+                isExternal: true,
+            });
+        }
+    }
 
     const [showMobileMenu, setShowMobileMenu] = useState(false);
 
