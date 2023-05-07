@@ -9,7 +9,7 @@ type AchievementBundle = {
     updated_at: string;
 };
 
-export async function getOwnedBundles(): Promise<AchievementBundle> {
+export async function getOwnedBundles(): Promise<AchievementBundle[]> {
     const response = await fetch('/achievement-bundles/owned');
 
     if (!response.ok) {
