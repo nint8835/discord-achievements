@@ -13,7 +13,7 @@ func (a *App) handleOwnedBundles(c echo.Context) error {
 	sess := getSession(c)
 
 	if _, loggedIn := sess.Values["user_id"]; !loggedIn {
-		return c.JSON(http.StatusOK, nil)
+		return c.JSON(http.StatusUnauthorized, nil)
 	}
 
 	bundles, err := database.Instance.GetAchievementBundlesOwnedByUser(c.Request().Context(), sess.Values["user_id"].(string))
