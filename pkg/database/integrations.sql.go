@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createIntegration = `-- name: CreateIntegration :one
@@ -45,9 +44,9 @@ INSERT INTO integration_permissions (
 `
 
 type CreateIntegrationPermissionParams struct {
-	IntegrationID       int64         `json:"integration_id"`
-	AchievementBundleID sql.NullInt64 `json:"achievement_bundle_id"`
-	AchievementID       sql.NullInt64 `json:"achievement_id"`
+	IntegrationID       int64     `json:"integration_id"`
+	AchievementBundleID NullInt64 `json:"achievement_bundle_id"`
+	AchievementID       NullInt64 `json:"achievement_id"`
 }
 
 func (q *Queries) CreateIntegrationPermission(ctx context.Context, arg CreateIntegrationPermissionParams) (IntegrationPermission, error) {

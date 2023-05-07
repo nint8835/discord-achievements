@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"database/sql"
 	"strconv"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -42,13 +41,13 @@ var createIntegrationPermissionCmd = &cobra.Command{
 
 		integrationId, _ := strconv.ParseInt(answers.IntegrationID, 10, 64)
 
-		var achievementId sql.NullInt64
+		var achievementId database.NullInt64
 		if answers.AchievementID != "" {
 			achievementId.Int64, _ = strconv.ParseInt(answers.AchievementID, 10, 64)
 			achievementId.Valid = true
 		}
 
-		var bundleId sql.NullInt64
+		var bundleId database.NullInt64
 		if answers.BundleID != "" {
 			bundleId.Int64, _ = strconv.ParseInt(answers.BundleID, 10, 64)
 			bundleId.Valid = true

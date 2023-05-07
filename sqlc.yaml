@@ -13,3 +13,7 @@ sql:
             nullable: true
             go_type:
               type: "NullString"
+          - db_type: INTEGER
+            nullable: true
+            go_type:
+              type: NullInt64

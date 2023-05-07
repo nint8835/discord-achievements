@@ -5,20 +5,19 @@
 package database
 
 import (
-	"database/sql"
 	"time"
 )
 
 type Achievement struct {
-	ID          int64         `json:"id"`
-	Name        string        `json:"name"`
-	Description NullString    `json:"description"`
-	ImageUrl    NullString    `json:"image_url"`
-	IsUnique    bool          `json:"is_unique"`
-	BundleID    sql.NullInt64 `json:"bundle_id"`
-	OwnerID     string        `json:"owner_id"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
+	ID          int64      `json:"id"`
+	Name        string     `json:"name"`
+	Description NullString `json:"description"`
+	ImageUrl    NullString `json:"image_url"`
+	IsUnique    bool       `json:"is_unique"`
+	BundleID    NullInt64  `json:"bundle_id"`
+	OwnerID     string     `json:"owner_id"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 }
 
 type AchievementBundle struct {
@@ -47,11 +46,11 @@ type Integration struct {
 }
 
 type IntegrationPermission struct {
-	ID                  int64         `json:"id"`
-	IntegrationID       int64         `json:"integration_id"`
-	AchievementBundleID sql.NullInt64 `json:"achievement_bundle_id"`
-	AchievementID       sql.NullInt64 `json:"achievement_id"`
-	CreatedAt           time.Time     `json:"created_at"`
+	ID                  int64     `json:"id"`
+	IntegrationID       int64     `json:"integration_id"`
+	AchievementBundleID NullInt64 `json:"achievement_bundle_id"`
+	AchievementID       NullInt64 `json:"achievement_id"`
+	CreatedAt           time.Time `json:"created_at"`
 }
 
 type User struct {

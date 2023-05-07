@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"database/sql"
 	"strconv"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -56,7 +55,7 @@ var createAchievementCmd = &cobra.Command{
 			log.Fatal().Err(err).Msg("Error getting input values")
 		}
 
-		var bundleID sql.NullInt64
+		var bundleID database.NullInt64
 		if answers.BundleID != "" {
 			bundleID.Int64, _ = strconv.ParseInt(answers.BundleID, 10, 64)
 			bundleID.Valid = true
