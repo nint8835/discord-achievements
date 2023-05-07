@@ -41,7 +41,7 @@ export default function ManageRoot() {
             <div className="flex w-full flex-row gap-2 bg-zinc-700 p-4 md:h-full md:w-52 md:flex-col">
                 {sidebarLinks.map(SidebarLink)}
             </div>
-            <div>
+            <div className="flex-1">
                 <Outlet />
             </div>
         </div>

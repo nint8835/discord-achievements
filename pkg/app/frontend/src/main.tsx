@@ -7,6 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
+import { ownedBundleLoader } from './queries/achievement_bundles';
 import Home from './routes/Home';
 import Root from './routes/Root';
 import RouterError from './routes/RouterError';
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
                     {
                         path: 'achievement-bundles',
                         element: <ManageAchievementBundles />,
+                        loader: ownedBundleLoader(queryClient),
                     },
                     {
                         path: 'integrations',
