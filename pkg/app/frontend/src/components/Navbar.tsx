@@ -44,6 +44,10 @@ function Navbar() {
             });
         } else {
             items.push({
+                name: 'Manage',
+                href: '/manage',
+            });
+            items.push({
                 name: 'Logout',
                 href: '/auth/logout',
                 isExternal: true,

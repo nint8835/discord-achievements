@@ -10,6 +10,10 @@ import './index.css';
 import Home from './routes/Home';
 import Root from './routes/Root';
 import RouterError from './routes/RouterError';
+import ManageAchievements from './routes/manage/Achievements';
+import ManageAchievementBundles from './routes/manage/AchivementBundles';
+import ManageIntegrations from './routes/manage/Integrations';
+import ManageRoot from './routes/manage/ManageRoot';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +26,24 @@ const router = createBrowserRouter([
             {
                 element: <Home />,
                 index: true,
+            },
+            {
+                path: 'manage',
+                element: <ManageRoot />,
+                children: [
+                    {
+                        path: 'achievements',
+                        element: <ManageAchievements />,
+                    },
+                    {
+                        path: 'achievement-bundles',
+                        element: <ManageAchievementBundles />,
+                    },
+                    {
+                        path: 'integrations',
+                        element: <ManageIntegrations />,
+                    },
+                ],
             },
         ],
     },
