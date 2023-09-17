@@ -1,29 +1,30 @@
 'use client';
 
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 
 type NavBarItem = {
     name: string;
     href: string;
     isExternal?: boolean;
+    onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 function NavBarLink(item: NavBarItem) {
     const pathname = usePathname();
+    const className = 'transition-colors hover:text-purple-400' + (pathname === item.href ? ' underline' : '');
 
-    return (
-        <Link
-            href={item.href}
-            passHref
-            className={'transition-colors hover:text-purple-400' + (pathname === item.href ? ' underline' : '')}
-            key={item.name}
-        >
+    return !item.isExternal ? (
+        <Link href={item.href} className={className} key={item.name}>
             {item.name}
         </Link>
+    ) : (
+        <a href={item.href} className={className} key={item.name} onClick={item.onClick}>
+            {item.name}
+        </a>
     );
 }
 
@@ -41,8 +42,12 @@ export default function Navbar() {
         if (!session.data) {
             items.push({
                 name: 'Login',
-                href: '/auth/login',
+                href: '/api/auth/signin',
                 isExternal: true,
+                onClick: (e) => {
+                    e.preventDefault();
+                    signIn();
+                },
             });
         } else {
             items.push({
@@ -51,8 +56,12 @@ export default function Navbar() {
             });
             items.push({
                 name: 'Logout',
-                href: '/auth/logout',
+                href: '/api/auth/signout',
                 isExternal: true,
+                onClick: (e) => {
+                    e.preventDefault();
+                    signOut();
+                },
             });
         }
     }
