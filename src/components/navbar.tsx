@@ -15,10 +15,12 @@ type NavBarItem = {
 
 function NavBarLink({ item }: { item: NavBarItem }) {
     const pathname = usePathname();
-    const className = 'transition-colors hover:text-purple-400' + (pathname === item.href ? ' underline' : '');
+    const className =
+        'transition-colors hover:text-purple-400' +
+        (pathname === item.href || pathname.startsWith(item.href + '/') ? ' underline' : '');
 
     return !item.isExternal ? (
-        <Link href={item.href} className={className}>
+        <Link href={item.href} className={className} prefetch>
             {item.name}
         </Link>
     ) : (

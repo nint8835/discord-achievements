@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body>
                 <ContextProvider>
                     <Navbar />
-                    {children}
+                    <div className="pt-10">{children}</div>
                 </ContextProvider>
             </body>
         </html>
