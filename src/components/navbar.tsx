@@ -13,16 +13,16 @@ type NavBarItem = {
     onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
-function NavBarLink(item: NavBarItem) {
+function NavBarLink({ item }: { item: NavBarItem }) {
     const pathname = usePathname();
     const className = 'transition-colors hover:text-purple-400' + (pathname === item.href ? ' underline' : '');
 
     return !item.isExternal ? (
-        <Link href={item.href} className={className} key={item.name}>
+        <Link href={item.href} className={className}>
             {item.name}
         </Link>
     ) : (
-        <a href={item.href} className={className} key={item.name} onClick={item.onClick}>
+        <a href={item.href} className={className} onClick={item.onClick}>
             {item.name}
         </a>
     );
@@ -74,7 +74,11 @@ export default function Navbar() {
                 <div className="text-xl font-bold">
                     <a href="/">discord-achievements</a>
                 </div>
-                <div className="hidden flex-row items-center gap-4 md:flex">{items.map(NavBarLink)}</div>
+                <div className="hidden flex-row items-center gap-4 md:flex">
+                    {items.map((item) => (
+                        <NavBarLink item={item} key={item.name} />
+                    ))}
+                </div>
                 <div className="flex md:hidden">
                     <button
                         onClick={() => {
@@ -86,7 +90,9 @@ export default function Navbar() {
                 </div>
             </div>
             <div className={`${showMobileMenu ? 'flex' : 'hidden'} flex-col gap-2 px-2 pt-2 md:hidden `}>
-                {items.map(NavBarLink)}
+                {items.map((item) => (
+                    <NavBarLink item={item} key={item.name} />
+                ))}
             </div>
         </nav>
     );
