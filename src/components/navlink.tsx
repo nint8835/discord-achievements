@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -6,6 +8,7 @@ export default function NavLink({
     url,
     className,
     activeClassName,
+    inactiveClassName = '',
     matchPrefix = false,
     prefetch = false,
 }: {
@@ -13,6 +16,7 @@ export default function NavLink({
     url: string;
     className: string;
     activeClassName: string;
+    inactiveClassName?: string;
     matchPrefix?: boolean;
     prefetch?: boolean;
 }) {
@@ -21,6 +25,8 @@ export default function NavLink({
 
     if (pathname === url || (matchPrefix && pathname.startsWith(url + '/'))) {
         linkClassName += ' ' + activeClassName;
+    } else {
+        linkClassName += ' ' + inactiveClassName;
     }
 
     return (
