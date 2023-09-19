@@ -2,9 +2,8 @@
 
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { MouseEventHandler, useState } from 'react';
+import NavLink from './navlink';
 
 type NavBarItem = {
     name: string;
@@ -14,15 +13,12 @@ type NavBarItem = {
 };
 
 function NavBarLink({ item }: { item: NavBarItem }) {
-    const pathname = usePathname();
-    const className =
-        'transition-colors hover:text-purple-400' +
-        (pathname === item.href || pathname.startsWith(item.href + '/') ? ' underline' : '');
+    const className = 'transition-colors hover:text-purple-400';
 
     return !item.isExternal ? (
-        <Link href={item.href} className={className} prefetch>
+        <NavLink url={item.href} matchPrefix className={className} activeClassName="underline">
             {item.name}
-        </Link>
+        </NavLink>
     ) : (
         <a href={item.href} className={className} onClick={item.onClick}>
             {item.name}
