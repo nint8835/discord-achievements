@@ -19,6 +19,13 @@ export const AuthOptions: NextAuthOptions = {
             });
         },
     },
+    callbacks: {
+        session: async ({ session, token }) => {
+            session.user.id = token.sub!;
+
+            return session;
+        },
+    },
 };
 
 const handler = NextAuth(AuthOptions);
