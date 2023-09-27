@@ -35,8 +35,8 @@ export default function ManageLayout({ children }: { children: React.ReactNode }
     ];
 
     return (
-        <div className="flex h-full flex-col md:flex-row">
-            <div className="flex w-full flex-row gap-2 bg-zinc-700 p-4 md:h-full md:w-52 md:flex-col">
+        <div className="flex w-full flex-col md:flex-row">
+            <div className="flex flex-row gap-2 bg-zinc-700 p-4 md:w-52 md:flex-col">
                 {sidebarLinks.map((item) => (
                     <SidebarLink key={item.url} item={item} />
                 ))}
