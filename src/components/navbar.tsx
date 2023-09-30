@@ -44,7 +44,7 @@ export default function Navbar() {
                 isExternal: true,
                 onClick: (e) => {
                     e.preventDefault();
-                    signIn();
+                    signIn('discord');
                 },
             });
         } else {
