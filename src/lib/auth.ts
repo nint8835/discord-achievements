@@ -1,4 +1,5 @@
-import { type SessionOptions as IronSessionOptions } from 'iron-session';
+import { type SessionOptions as IronSessionOptions, getIronSession } from 'iron-session';
+import { cookies } from 'next/headers';
 import type { ModuleOptions } from 'simple-oauth2';
 
 export const DiscordOAuthConfig: ModuleOptions<'client_id'> = {
@@ -25,3 +26,13 @@ export const SessionOptions: IronSessionOptions = {
 export type SessionData = {
     user?: any;
 };
+
+export async function ssrGetCurrentUser(): Promise<null | string> {
+    const session = await getIronSession<SessionData>(cookies(), SessionOptions);
+
+    if (!session.user) {
+        return null;
+    }
+
+    return session.user.username;
+}
