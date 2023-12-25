@@ -9,7 +9,7 @@ import './globals.css';
 const inter = Inter({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-inter',
+    variable: '--font-sans',
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
