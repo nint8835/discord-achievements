@@ -93,6 +93,7 @@ export const guildMemberships = sqliteTable(
         guildId: text('guild_id')
             .notNull()
             .references(() => guilds.id),
+        admin: integer('admin', { mode: 'boolean' }).notNull().default(false),
     },
     (table) => ({ pk: primaryKey({ columns: [table.userId, table.guildId] }) }),
 );

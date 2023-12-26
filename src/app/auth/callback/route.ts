@@ -50,9 +50,7 @@ export async function GET(request: NextRequest) {
     });
     const guildsData = await guildsReq.json();
 
-    const guildsArray = guildsData.map((guild: any) => guild.id);
-
-    await syncUserGuilds(user.id, guildsArray);
+    await syncUserGuilds(user.id, guildsData);
 
     return response;
 }

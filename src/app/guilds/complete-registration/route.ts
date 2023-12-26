@@ -3,6 +3,7 @@ import { AuthorizationCode, type AuthorizationTokenConfig } from 'simple-oauth2'
 
 import db from '@/db';
 import { guildMemberships, guilds } from '@/db/schema';
+import { syncUserGuilds } from '@/db/utils';
 import { DiscordOAuthConfig, ssrGetCurrentUser } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
             },
         });
 
-    await db.insert(guildMemberships).values({ guildId, userId: currentUser.id }).onConflictDoNothing();
+    await syncUserGuilds(currentUser.id, userGuilds);
 
     const response = new Response(null, { status: 302 });
     response.headers.set('Location', `${parsedUrl.origin}/guilds/${guildId}`);
