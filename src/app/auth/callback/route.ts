@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
 import { AuthorizationCode } from 'simple-oauth2';
 
+import { createOrUpdateUser } from '@/db/utils';
 import { DiscordOAuthConfig, SessionData, SessionOptions } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
@@ -30,13 +31,16 @@ export async function GET(request: NextRequest) {
     });
     const userData = await userReq.json();
 
-    // TODO: Actual user stuff here.
+    const user = await createOrUpdateUser({
+        id: userData.id,
+        displayName: userData.global_name || userData.username,
+    });
 
     const response = new Response(null, { status: 302 });
     response.headers.set('Location', parsedUrl.origin);
 
     const session = await getIronSession<SessionData>(cookies(), SessionOptions);
-    session.user = userData;
+    session.user = user.id;
     await session.save();
 
     return response;

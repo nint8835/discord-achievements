@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
+import type { SessionUser } from '@/lib/auth';
+
 type NavParent = {
     label: string;
     children: NavItem[];
@@ -73,14 +75,14 @@ function MobileNavItem({ item, setIsOpen }: { item: NavItem | NavParent; setIsOp
     );
 }
 
-export default function Navbar({ currentUser }: { currentUser: string | null }) {
+export default function Navbar({ currentUser }: { currentUser: SessionUser | null }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navItems: (NavParent | NavItem)[] = [];
 
     if (currentUser) {
         navItems.push({
-            label: currentUser,
+            label: currentUser.displayName,
             children: [
                 {
                     label: 'Sign Out',

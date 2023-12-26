@@ -2,6 +2,9 @@ import { type SessionOptions as IronSessionOptions, getIronSession } from 'iron-
 import { cookies } from 'next/headers';
 import type { ModuleOptions } from 'simple-oauth2';
 
+import db from '@/db';
+import { users } from '@/db/schema';
+
 export const DiscordOAuthConfig: ModuleOptions<'client_id'> = {
     client: {
         id: process.env.DISCORD_CLIENT_ID!,
@@ -24,15 +27,23 @@ export const SessionOptions: IronSessionOptions = {
 };
 
 export type SessionData = {
-    user?: any;
+    user?: string;
 };
 
-export async function ssrGetCurrentUser(): Promise<null | string> {
+export type SessionUser = typeof users.$inferSelect;
+
+export async function ssrGetCurrentUser(): Promise<null | SessionUser> {
     const session = await getIronSession<SessionData>(cookies(), SessionOptions);
 
     if (!session.user) {
         return null;
     }
 
-    return session.user.username;
+    const user = await db.query.users.findFirst({ where: (users, { eq }) => eq(users.id, session.user!) });
+
+    if (!user) {
+        return null;
+    }
+
+    return user;
 }
