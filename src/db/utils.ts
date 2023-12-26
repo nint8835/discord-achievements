@@ -26,6 +26,10 @@ export async function syncUserGuilds(userId: string, userGuilds: string[]): Prom
         .where(and(eq(guildMemberships.userId, userId), notInArray(guildMemberships.guildId, userGuilds)));
 
     const registeredGuildIds = await db.select().from(guilds).where(inArray(guilds.id, userGuilds));
+    if (registeredGuildIds.length === 0) {
+        return;
+    }
+
     await db
         .insert(guildMemberships)
         .values(registeredGuildIds.map(({ id: guildId }) => ({ guildId, userId })))
