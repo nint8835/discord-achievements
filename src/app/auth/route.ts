@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     redirect(
         client.authorizeURL({
-            scope: 'identify',
+            scope: ['identify', 'guilds'],
             redirect_uri: `${request.nextUrl.origin}/auth/callback`,
             state: 'discord-achievements',
         }),

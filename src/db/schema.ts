@@ -10,6 +10,7 @@ export const usersRelations = relations(users, ({ many }) => ({
     earnedAchievements: many(earnedAchievements),
     ownedAchievements: many(achievements),
     ownedAchievementBundles: many(achievementBundles),
+    guildMemberships: many(guildMemberships),
 }));
 
 export const achievements = sqliteTable('achievements', {
@@ -80,4 +81,23 @@ export const guilds = sqliteTable('guilds', {
 export const guildsRelations = relations(guilds, ({ one, many }) => ({
     achievements: many(achievements),
     achievementBundles: many(achievementBundles),
+    members: many(guildMemberships),
+}));
+
+export const guildMemberships = sqliteTable(
+    'guild_memberships',
+    {
+        userId: text('user_id')
+            .notNull()
+            .references(() => users.id),
+        guildId: text('guild_id')
+            .notNull()
+            .references(() => guilds.id),
+    },
+    (table) => ({ pk: primaryKey({ columns: [table.userId, table.guildId] }) }),
+);
+
+export const guildMembershipsRelations = relations(guildMemberships, ({ one }) => ({
+    user: one(users, { fields: [guildMemberships.userId], references: [users.id] }),
+    guild: one(guilds, { fields: [guildMemberships.guildId], references: [guilds.id] }),
 }));

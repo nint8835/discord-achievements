@@ -1,5 +1,7 @@
+import { and, eq, inArray, notInArray } from 'drizzle-orm';
+
 import db from './db';
-import { users } from './schema';
+import { guildMemberships, guilds, users } from './schema';
 
 export async function createOrUpdateUser(data: {
     id: string;
@@ -16,4 +18,16 @@ export async function createOrUpdateUser(data: {
         })
         .returning()
         .get();
+}
+
+export async function syncUserGuilds(userId: string, userGuilds: string[]): Promise<void> {
+    await db
+        .delete(guildMemberships)
+        .where(and(eq(guildMemberships.userId, userId), notInArray(guildMemberships.guildId, userGuilds)));
+
+    const registeredGuildIds = await db.select().from(guilds).where(inArray(guilds.id, userGuilds));
+    await db
+        .insert(guildMemberships)
+        .values(registeredGuildIds.map(({ id: guildId }) => ({ guildId, userId })))
+        .onConflictDoNothing();
 }

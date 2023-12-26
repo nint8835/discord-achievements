@@ -1,9 +1,9 @@
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
-import { AuthorizationCode } from 'simple-oauth2';
+import { AuthorizationCode, type AuthorizationTokenConfig } from 'simple-oauth2';
 
-import { createOrUpdateUser } from '@/db/utils';
+import { createOrUpdateUser, syncUserGuilds } from '@/db/utils';
 import { DiscordOAuthConfig, SessionData, SessionOptions } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
 
     const client = new AuthorizationCode(DiscordOAuthConfig);
 
-    const tokenParams = {
+    const tokenParams: AuthorizationTokenConfig = {
         code,
-        scope: 'identify',
+        scope: ['identify', 'guilds'],
         redirect_uri: `${parsedUrl.origin}/auth/callback`,
     };
     const accessToken = await client.getToken(tokenParams);
@@ -42,6 +42,17 @@ export async function GET(request: NextRequest) {
     const session = await getIronSession<SessionData>(cookies(), SessionOptions);
     session.user = user.id;
     await session.save();
+
+    const guildsReq = await fetch('https://discord.com/api/v10/users/@me/guilds?limit=200', {
+        headers: {
+            Authorization: `Bearer ${accessToken.token.access_token}`,
+        },
+    });
+    const guildsData = await guildsReq.json();
+
+    const guildsArray = guildsData.map((guild: any) => guild.id);
+
+    await syncUserGuilds(user.id, guildsArray);
 
     return response;
 }
