@@ -82,6 +82,10 @@ export default function Navbar({ currentUser }: { currentUser: SessionUser | nul
 
     if (currentUser) {
         navItems.push({
+            label: 'Guilds',
+            href: '/guilds',
+        });
+        navItems.push({
             label: currentUser.displayName,
             children: [
                 {

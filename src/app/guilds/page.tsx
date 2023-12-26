@@ -5,12 +5,20 @@ import db from '@/db';
 import { guildMemberships, guilds } from '@/db/schema';
 import { ssrGetCurrentUser } from '@/lib/auth';
 
-export default async function GuildsPage() {
+export async function generateMetadata() {
     const currentUser = await ssrGetCurrentUser();
 
     if (!currentUser) {
         redirect('/auth');
     }
+
+    return {
+        title: 'Guilds - discord-achievements',
+    };
+}
+
+export default async function GuildsPage() {
+    const currentUser = (await ssrGetCurrentUser())!;
 
     const currentUserGuilds = await db
         .select({ ...getTableColumns(guilds) })
