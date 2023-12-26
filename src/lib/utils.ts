@@ -4,3 +4,7 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+export function possessiveString(name: string): string {
+    return name + (name.endsWith('s') ? "'" : "'s");
+}

@@ -85,6 +85,10 @@ export default function Navbar({ currentUser }: { currentUser: SessionUser | nul
             label: currentUser.displayName,
             children: [
                 {
+                    label: 'My Profile',
+                    href: `/users/${currentUser.id}`,
+                },
+                {
                     label: 'Sign Out',
                     href: '/auth/signout',
                     isExternal: true,
