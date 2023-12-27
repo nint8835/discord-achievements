@@ -46,7 +46,7 @@ export default async function GuildsPage() {
                 {currentUserGuilds.length !== 0 ? (
                     <ul className="list-inside list-disc">
                         {currentUserGuilds.map(({ id, name, admin }) => (
-                            <li key={id}>
+                            <li key={id} className="py-2 first:pt-0">
                                 <Link href={`/guilds/${id}`} className="rounded-md p-2 transition-all hover:bg-accent">
                                     {name}
                                 </Link>
